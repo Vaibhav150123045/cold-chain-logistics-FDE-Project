@@ -1,0 +1,3 @@
+Can EC2 be used to host a database?
+Why did you choose Azure SQL Database and not Azure virtual machine?
+Why did you choose MSSQL?

@@ -1,0 +1,17 @@
+We have a client and client have their data in the cloud. (MS-SQL 2022)
+Client wants -- they want to chat with the data.
+Data is present in legacy system - you cannot dump this data in your system using APIs
+There is security behind it but they will be giving me ID and password. Because they dont maintain a seperate DBA in their system.
+
+They have ways to chat with data but not via natural language method
+They have dashboards to chat with data
+
+What's the problem with dashboards? 
+Whenever there is a UI there is going to be a learning curve, some people to maintain that information.
+There is a team at backend that built all this.
+
+Dashboards show 100s of different answers or metrics and you are required to learn all of metrics
+
+SOLUTION - Agentic-ai chatbot
+
+
