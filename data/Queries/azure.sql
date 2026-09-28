@@ -1,0 +1,5 @@
+SELECT COUNT(*) AS total_rows
+FROM   dbo.TBL_SC_FLEET_HIST_RAW;
+
+
+-- DROP TABLE dbo.TBL_SC_FLEET_HIST_RAW;
