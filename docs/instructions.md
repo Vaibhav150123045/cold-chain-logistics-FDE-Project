@@ -19,3 +19,6 @@ Data Source=cold-storage-logistics-mysql.database.windows.net,1433;Initial Catal
 - Initial brainstorming or design discussion is present in docs/Design & Requirements
 
 - Creation of HLD & LLD
+
+- Created pinecone and deepseek account and paste the API keys to consume thoses services.
+
