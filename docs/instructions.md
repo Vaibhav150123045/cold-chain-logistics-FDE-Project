@@ -13,3 +13,9 @@ docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=your_password" -p 1433:1433 
 - Install MSSQL extension and connect to your database over there
 - Keep your connection string ready 
 Data Source=cold-storage-logistics-mysql.database.windows.net,1433;Initial Catalog=free-sql-db-0184666;Pooling=False;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Name=vscode-mssql;Connect Retry Count=1;Connect Retry Interval=10;Command Timeout=30
+
+- The client SOPs (standard operating procedures) are provided in data/policy/Cold_Chain_Incident_SOP_v2.md
+
+- Initial brainstorming or design discussion is present in docs/Design & Requirements
+
+- Creation of HLD & LLD

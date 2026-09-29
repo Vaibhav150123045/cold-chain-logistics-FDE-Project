@@ -2,7 +2,7 @@ from pathlib import Path
 import pandas as pd
 import urllib
 import os
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 
 # __file__ is 'experiment/phase-0/ingest_legacy_data.py'
@@ -59,14 +59,19 @@ connection_string = (
 )
 
 params = urllib.parse.quote_plus(connection_string)
-connection_string = "Driver={ODBC Driver 18 for SQL Server};Server=tcp:cold-storage-logistics-mysql.database.windows.net,1433;Database=free-sql-db-0184666;Uid=cold-storage-logistics;Pwd={your_password_here};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
+# connection_string = "Driver={ODBC Driver 18 for SQL Server};Server=tcp:cold-storage-logistics-mysql.database.windows.net,1433;Database=free-sql-db-0184666;Uid=cold-storage-logistics;Pwd={your_password_here};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
 engine = create_engine(f"mssql+pyodbc:///?odbc_connect={params}")
 
+with engine.connect() as connection:
+    result = connection.execute(text("SELECT @@VERSION;"))
+    version = result.scalar()
+    print("\nSUCCESS: Connected to Azure SQL Database successfully!")
+    print(f"Database Server Version: {version.splitlines()[0]}")
 
 # 4. Ingest data into the messy table name
-table_name = 'TBL_SC_FLEET_HIST_RAW'
-print(f"Ingesting into {table_name}. This may take a minute...")
-df_legacy.to_sql(table_name, engine, if_exists='replace',
-                 index=False, schema='dbo')
+# table_name = 'TBL_SC_FLEET_HIST_RAW'
+# print(f"Ingesting into {table_name}. This may take a minute...")
+# df_legacy.to_sql(table_name, engine, if_exists='replace',
+#                  index=False, schema='dbo')
 
 print("✅ Legacy data ingestion complete!")

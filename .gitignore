@@ -1,3 +1,42 @@
-.env
-venv/
+# macOS System Files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Python Core & Caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+wheels/
+
+# Virtual Environments
 .venv/
+venv/
+ENV/
+env/
+
+# Environment Variables & Secrets
+.env
+
+# IDEs & Editors (VS Code, PyCharm)
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing & Linters
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.coverage
+htmlcov/
+*.log
