@@ -1,4 +1,4 @@
-from src.orchestrator import fde_agent
+from orchestrator import fde_agent
 import os
 import sys
 import uuid
@@ -256,7 +256,7 @@ elif app_mode == "🛡️ Security & Audit Logs":
         col1, col2 = st.columns(2)
         with col1:
             input_user = st.text_input(
-                "Admin Username", value=os.getenv("SQL_ADMIN_USER", ""))
+                "Admin Username", value=os.getenv("SQL_SERVER_USERNAME", ""))
         with col2:
             input_pass = st.text_input(
                 "Admin Password", type="password", value="")
@@ -265,20 +265,22 @@ elif app_mode == "🛡️ Security & Audit Logs":
             "Authenticate & Load Logs", use_container_width=True)
 
     if submit_admin:
-        expected_admin_user = os.getenv("SQL_ADMIN_USER")
-        expected_admin_pass = os.getenv("SQL_ADMIN_PASSWORD")
+        expected_admin_user = os.getenv("SQL_SERVER_USERNAME")
+        expected_admin_pass = os.getenv("SQL_SERVER_PASSWORD")
 
         if input_user == expected_admin_user and input_pass == expected_admin_pass:
             try:
                 # Build an isolated admin connection string for viewing data
+                print(f"connecting using, {input_user}, {input_pass}")
                 admin_params = urllib.parse.quote_plus(
-                    "DRIVER={ODBC Driver 18 for SQL Server};"
-                    f"SERVER={db_host},{db_port};"
-                    "DATABASE=master;"
+                    f"DRIVER={{ODBC Driver 18 for SQL Server}};"
+                    f"SERVER=tcp:{db_host},{db_port};"
+                    f"DATABASE={db_name};"
                     f"UID={input_user};"
                     f"PWD={input_pass};"
-                    "Encrypt=no;"
-                    "TrustServerCertificate=yes;"
+                    f"Encrypt=yes;"
+                    f"TrustServerCertificate=yes;"
+                    f"Connection Timeout=30;"
                 )
                 admin_engine = create_engine(
                     f"mssql+pyodbc:///?odbc_connect={admin_params}")
