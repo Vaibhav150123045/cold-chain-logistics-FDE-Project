@@ -7,3 +7,7 @@
 -- FROM   FDE_VIEWS.VW_ACTIVE_FLEET;
 -- SELECT TOP 5 *
 -- FROM   dbo.TBL_SC_FLEET_HIST_RAW;
+SELECT TOP 2 Latitude,
+             Longitude,
+             Current_Temperature_C
+FROM   FDE_VIEWS.VW_ACTIVE_FLEET;

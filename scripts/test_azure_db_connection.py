@@ -21,7 +21,7 @@ def test_connection():
     connection_string = (
         f"DRIVER={{ODBC Driver 18 for SQL Server}};"
         f"SERVER=tcp:{db_host},{db_port};"
-        f"DATABASE=free-sql-db-0184666;"
+        f"DATABASE=̵{db_name};"
         f"UID={db_user};"
         f"PWD={db_password};"
         f"Encrypt=yes;"
