@@ -1,5 +1,5 @@
-# Stage 1: Build Stage
-FROM python:3.12.13-slim as builder
+# syntax=docker/dockerfile:1.4
+FROM --platform=linux/amd64 python:3.12.13-slim as builder
 
 WORKDIR /app
 
@@ -20,22 +20,24 @@ RUN pip install --upgrade pip setuptools wheel && \
     pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
 
 # Stage 2: Runtime Stage
-FROM python:3.12.13-slim
+FROM --platform=linux/amd64 python:3.12.13-slim
 
 WORKDIR /app
 
 # Install only runtime dependencies (including ODBC driver for SQL Server)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    unixodbc \
-    unixodbc-dev \
-    gnupg \
-    curl \
-    apt-transport-https \
-    && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
-    && curl https://packages.microsoft.com/config/debian/12/prod.list > /etc/apt/sources.list.d/mssql-release.list \
-    && apt-get update \
-    && ACCEPT_EULA=Y apt-get install -y --no-install-recommends msodbcsql18 \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        unixodbc \
+        unixodbc-dev \
+        gnupg \
+        curl \
+        apt-transport-https \
+        ca-certificates && \
+    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
+    echo "deb [arch=amd64,arm64] https://packages.microsoft.com/debian/12/prod bookworm main" | tee /etc/apt/sources.list.d/mssql-release.list && \
+    apt-get update && \
+    ACCEPT_EULA=Y apt-get install -y --no-install-recommends msodbcsql18 && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy wheels from builder stage
 COPY --from=builder /app/wheels /wheels
