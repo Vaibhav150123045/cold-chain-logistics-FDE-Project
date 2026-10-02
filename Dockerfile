@@ -60,4 +60,4 @@ ENV STREAMLIT_SERVER_HEADLESS=true \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
-ENTRYPOINT ["streamlit", "run", "src/ui.py"]
+ENTRYPOINT ["python3", "-m", "streamlit", "run", "src/ui.py"]
