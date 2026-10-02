@@ -24,7 +24,7 @@ FROM --platform=linux/amd64 python:3.12.13-slim
 
 WORKDIR /app
 
-# Install only runtime dependencies (including ODBC driver for SQL Server)
+# Install runtime dependencies including ODBC driver with explicit retries
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         unixodbc \
@@ -33,7 +33,10 @@ RUN apt-get update && \
         curl \
         apt-transport-https \
         ca-certificates && \
-    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Microsoft ODBC driver in a separate layer
+RUN curl --retry 3 --retry-delay 2 https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
     echo "deb [arch=amd64,arm64] https://packages.microsoft.com/debian/12/prod bookworm main" | tee /etc/apt/sources.list.d/mssql-release.list && \
     apt-get update && \
     ACCEPT_EULA=Y apt-get install -y --no-install-recommends msodbcsql18 && \
