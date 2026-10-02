@@ -28,13 +28,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Microsoft ODBC driver
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends gnupg apt-transport-https ca-certificates && \
-    curl --retry 3 --retry-delay 2 https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
-    echo "deb [arch=amd64] https://packages.microsoft.com/debian/12/prod bookworm main" | tee /etc/apt/sources.list.d/mssql-release.list && \
-    apt-get update && \
-    ACCEPT_EULA=Y apt-get install -y --no-install-recommends msodbcsql18 && \
-    apt-get purge -y --auto-remove gnupg apt-transport-https && \
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends gnupg ca-certificates; \
+    curl --fail --retry 3 --retry-delay 2 --location https://packages.microsoft.com/keys/microsoft.asc -o /tmp/microsoft.asc; \
+    gpg --dearmor < /tmp/microsoft.asc > /etc/apt/trusted.gpg.d/microsoft.gpg; \
+    echo "deb [arch=amd64] https://packages.microsoft.com/debian/12/prod bookworm main" > /etc/apt/sources.list.d/mssql-release.list; \
+    apt-get update; \
+    ACCEPT_EULA=Y apt-get install -y --no-install-recommends msodbcsql18; \
+    rm -f /tmp/microsoft.asc; \
     rm -rf /var/lib/apt/lists/*
 
 # Copy installed packages from builder
